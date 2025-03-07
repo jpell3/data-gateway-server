@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src\\app.js",
+    "dev": "nodemon --no-warnings src\\app.js",
     "test": "jest functions.test.js"
   },
   "keywords": [],

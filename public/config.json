@@ -1,7 +1,7 @@
 {
   "systemConfig": {
     "plc": {
-      "ipAddress": "10.0.0.11/24",
+      "ipAddress": "10.0.0.100/24",
       "machineUnits": 0
     },
     "components": {
@@ -41,8 +41,5 @@
         }
       ]
     }
-  },
-  "data": {
-    "test": 200
   }
 }

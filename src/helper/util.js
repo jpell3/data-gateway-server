@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+import crypto from 'crypto'
 
 function generateHash(hashObj) {
   const hashString = JSON.stringify(hashObj)
@@ -23,4 +23,4 @@ async function fetchData(url) {
   };
 };
 
-module.exports = { generateHash, packageData };
+export default packageData;

@@ -1,8 +1,8 @@
-const express = require('express');
-const ip = require('ip').address()
-const crypto = require('crypto')
-const { packageData } = require('../helper/util')
-const data = require('../../public/config.json')
+import express from 'express'
+import ip from 'ip'
+import crypto from 'crypto'
+import packageData from '../helper/util.js'
+import data from '../../public/config.json' assert { type: 'json' };
 
 const customerApp = express();
 const port = process.env.CUSTOMER_PORT || 3103
@@ -20,7 +20,7 @@ customerApp.get(`/api/hash`, (req, res) => {
 })
 
 customerApp.listen(port, () => {
-  console.log(`Customer server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip}:${port} (network)`);
+  console.log(`Customer server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip.address()}:${port} (network)`);
 })
 
-module.exports = customerApp;
+export default customerApp;

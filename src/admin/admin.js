@@ -2,10 +2,9 @@
 //  Farrel Corporation © 2025
 
 // import libaries
-const express = require('express');
-const ip = require('ip').address()
-const fs = require('fs');
-const jwt = require('jsonwebtoken')
+import express from 'express'
+import ip from 'ip'
+import jwt from 'jsonwebtoken'
 
 const adminApp = express()
 const port = process.env.ADMIN_PORT || 3102;
@@ -67,7 +66,7 @@ adminApp.get(`*`,(req, res) => {
 });
 
 adminApp.listen(port, () => {
-  console.log(`Admin server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip}:${port} (network)`);
+  console.log(`Admin server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip.address()}:${port} (network)`);
 });
 
-module.exports = adminApp;
+export default adminApp;
