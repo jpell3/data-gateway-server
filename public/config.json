@@ -1,7 +1,9 @@
 {
   "systemConfig": {
     "plc": {
-      "ipAddress": "10.0.0.100/24",
+      "ipAddress": "10.0.0.10",
+      "subnetAddress": "255.255.255.0",
+      "gatewayAddress": "10.0.0.1",
       "machineUnits": 0
     },
     "components": {
@@ -17,29 +19,6 @@
       "pelletSystem": {
         "enabled": false
       }
-    },
-    "feeders": {
-      "count": 3,
-      "details": [
-        {
-          "id": 1,
-          "type": "gravimetric",
-          "rate": 100,
-          "unit": "massFlow"
-        },
-        {
-          "id": 2,
-          "type": "volumetric",
-          "rate": 75,
-          "unit": "volumeFlow"
-        },
-        {
-          "id": 3,
-          "type": "gravimetric",
-          "rate": 120,
-          "unit": "massFlow"
-        }
-      ]
     }
   }
 }
