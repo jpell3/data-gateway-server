@@ -1,23 +1,30 @@
 {
-  "systemConfig": {
-    "plc": {
-      "ipAddress": "10.0.0.10",
-      "subnetAddress": "255.255.255.0",
-      "gatewayAddress": "10.0.0.1",
-      "machineUnits": 0
-    },
-    "components": {
-      "mixer": {
-        "enabled": true
+  "type": "configuration",
+  "data": {
+    "systemConfig": {
+      "plc": {
+        "ipAddress": "10.0.0.10",
+        "subnetAddress": "255.255.255.0",
+        "gatewayAddress": "10.0.0.1",
+        "machineUnits": 0
       },
-      "extruder": {
-        "enabled": true
-      },
-      "screenChanger": {
-        "enabled": false
-      },
-      "pelletSystem": {
-        "enabled": false
+      "components": {
+        "mixer": {
+          "enabled": true,
+          "value1": 100.0
+        },
+        "extruder": {
+          "enabled": true,
+          "value1": 100.0
+        },
+        "screenChanger": {
+          "enabled": false,
+          "value1": 100.0
+        },
+        "pelletSystem": {
+          "enabled": false,
+          "value1": 100.0
+        }
       }
     }
   }

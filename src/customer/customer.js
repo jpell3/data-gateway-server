@@ -1,45 +1,44 @@
-import express from 'express'
-import ip from 'ip'
-import packageData from '../helper/util.js'
-import data from '../../public/config.json' assert { type: 'json' };
-import { WebSocketServer } from 'ws'
+//  Farrel OPCUA Data Gateway Server
+//  Farrel Corporation © 2025
+//  Author: JPelletier
 
+//  Imports
+import express from 'express';
+import configData from '../../public/config.json' assert { type: 'json' };
+import processData from '../../public/process.json' assert { type: 'json' };
+import { packageData, fetchData } from '../helper/util.js';
+import { WebSocketServer } from 'ws';
+
+//  Configuration and Constants
 const customerApp = express();
-const io = new WebSocketServer({ port: 8085 });
-const port = process.env.CUSTOMER_PORT || 3103
+const io = new WebSocketServer({ port: 80 });
 let intervalId = null;
 
-function startSending(socket, interval) {
-  if (intervalId === null) { // Prevent multiple intervals
-    socket.send(`Start received. Sending random numbers every ${interval / 1000} seconds.`);
+function startSending(io, socket, interval) {
+  if (intervalId === null) {
     intervalId = setInterval(() => {
-      socket.send(Math.random() * 100);
+      io.clients.forEach(client => {
+        if (client.readyState === socket.OPEN) {
+          client.send(JSON.stringify(processData));
+          // client.send(JSON.stringify(configData));
+        }
+    });
     }, interval);
   } else {
     socket.send(`Already sending data. Send "stop" to stop.`);
   }
 }
 
-function stopSending(socket) {
-  if (intervalId !== null) {
-    clearInterval(intervalId);
-    intervalId = null;
-    socket.send(`Stop received. Send "start" to resume.`);
-  } else {
-    socket.send(`Not currently sending. Send "start" to begin.`);
-  }
-}
-
 io.on('connection', socket => {
   console.log(`New client connected. ${io.clients.size} clients connected.`);
-  socket.send(`Server connection successful.`)
+  // socket.send(`Server connection successful.`)
 
   socket.on('message', message => {
 
     console.log(`Message received from client: ${message}`);
     
     if (message.toString() === "start") {
-      startSending(socket, 1000);
+      startSending(io, socket, 1000);
     } else if (message.toString() === "stop") {
       stopSending(socket);
     }
@@ -52,25 +51,31 @@ io.on('connection', socket => {
   });
 });
 
+//  Route Handlers
+//  SERVE: landing page
 customerApp.get(`/`, (req, res) => {
   res.end(`CUSTOMER APP:  /`)
 });
 
-customerApp.get(`/api`, (req, res) => {
-  res.json(packageData(data));
+//  SERVE: packaged configuration data
+customerApp.get(`/config`, (req, res) => {
+  res.json(packageData(configData));
 });
 
+//  SERVE: packaged process data
+customerApp.get(`/api`, async (req, res) => {
+  const data = await fetchData('http://127.0.0.1:3000/admin/data')
+  res.json(data);
+});
+
+//  SERVE: process data hash
 customerApp.get(`/api/hash`, (req, res) => {
-  res.json(packageData(data).hash) 
+  res.json(packageData(processData).hash) 
 });
 
-// catch all route
-customerApp.get(`*`, (req, res) => {
-  res.status(404).send(`Sorry, the page ${req.url} does not exist. Please try a different URL.`)
-});
-
-customerApp.listen(port, () => {
-  console.log(`Customer server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip.address()}:${port} (network)`);
+//  DELEGATE: send unmatched routes back to app.js
+customerApp.use((req, res, next) => {
+  next();
 });
 
 export default customerApp;

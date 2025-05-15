@@ -1,35 +1,40 @@
+//  Farrel OPCUA Data Gateway Server
+//  Farrel Corporation © 2025
+//  Author: JPelletier
+
+//  Imports
 import express from 'express'
 import ip from 'ip'
-import env from 'dotenv'
 import adminApp from './admin/admin.js'
 import customerApp from './customer/customer.js'
-import helmet from 'helmet'
-import cors from 'cors'
 
+//  Configuration and Constants
 const app = express();
-env.config()
-const port = process.env.APP_PORT || 3101;
+const port = 3000;
 
-//  MIDDLEWARE - cors, helmet, logger
-app.use(cors());
-app.use(helmet());
+//  Middleware
 app.use(logger);
 app.use(`/admin`, adminApp);
 app.use(`/customer`, customerApp);
 
+//  Route Handlers
+//  SERVE: landing page
 app.get(`/`, (req, res) => {
-  res.end("Welcome to the landing page of FarrelConnect.")
+  res.end("Welcome to the landing page of FarrelConnect. This page is currently under construction.")
 });
 
-app.get(`*`, (req, res) => {
+//  SERVE: 404 not found
+app.use((req, res) => {
   res.status(404).send(`Sorry, the page ${req.url} does not exist. Please try a different URL.`)
 });
 
+//  Start Server
 app.listen(port, "0.0.0.0", () => {
   console.log(`App server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip.address()}:${port} (network)`);
 });
 
+//  Middleware Functions
 function logger(req, res, next) {
   console.log(`LOG: ${req.method} request originated from ${req.ip} for route ${req.url}`);
   next()
-};
+}

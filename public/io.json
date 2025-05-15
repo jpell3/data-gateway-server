@@ -1,0 +1,7 @@
+{
+  "author": "jpelletier",
+  "date": "May 14th, 2025",
+  "status": "FUTURE ADDITION",
+  "description": "This file will house the PLC IO configuration data.",
+  "implementation": "The server will hash this file infrequently (or via trigger) to detect changes. If a change is detected, it will push a web socket message with the updated data to all clients."
+}

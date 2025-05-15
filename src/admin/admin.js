@@ -1,32 +1,38 @@
-//  FarrelConnect Data Server
+//  Farrel OPCUA Data Gateway Server
 //  Farrel Corporation © 2025
+//  Author: JPelletier
 
-// import libaries
-import express from 'express'
-import ip from 'ip'
+//  Imports
+import express from 'express';
+import configData from '../../public/config.json' assert { type: 'json' };
+import processData from '../../public/process.json' assert { type: 'json' };
+import { generateTempProcessData } from '../helper/util.js';
 
-const adminApp = express()
-const port = process.env.ADMIN_PORT || 3102;
 
-adminApp.use(express.json())
+//  Configuration and Constants
+const adminApp = express();
+adminApp.use(express.json());
 
-// landing page
+//  Route Handlers
+//  SERVE: landing page
 adminApp.get(`/`, (req, res) => {
   res.end(`ADMIN APP:  /`)
 });
 
-// expose configuration data
+//  SERVE: configuration data
 adminApp.get(`/config`, (req, res) => {
   res.writeHead(200, { "Content-Type" : 'application/json' });
-  res.end(JSON.stringify(data))});
+  res.end(JSON.stringify(configData))});
 
-// catch all route
-adminApp.get(`*`,(req, res) => {
-  res.status(404).send(`Sorry, the page ${req.url} does not exist. Please try a different URL.`)
-});
+//  SERVE: process data
+adminApp.get(`/data`, (req, res) => {
+  generateTempProcessData(processData)
+  res.writeHead(200, { "Content-Type" : 'application/json' });
+  res.end(JSON.stringify(processData))});
 
-adminApp.listen(port, () => {
-  console.log(`Admin server listening on port ${port} at http://127.0.0.1:${port} (local) and http://${ip.address()}:${port} (network)`);
+//  DELEGATE: send unmatched routes back to app.js
+adminApp.use((req, res, next) => {
+  next();
 });
 
 export default adminApp;
