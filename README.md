@@ -48,9 +48,17 @@ The goal is to provide a modular, scalable solution for remote visibility into l
 - Delivers real-time updates to connected users.
 
 
-##  Commands
+##  Commands and Routes
 
 To run this project, use `npm run dev`. This will start the main server and services automatically.
+
+- `http://127.0.0.1:3000` - Main Application Landing Page
+- `http://127.0.0.1:3000/admin` - Admin Application Landing Page
+- `http://127.0.0.1:3000/admin/config` - Fetches configuration data.
+- `http://127.0.0.1:3000/admin/data` - Fetches current process data.
+- `http://127.0.0.1:3000/customer` - Customer Application Landing Page
+- `http://127.0.0.1:3000/customer/api` - Fetches current process data from Admin service.
+- `http://127.0.0.1:3000/customer/api/hash` - Fetches SHA1 hash of the current process data.
 
 
 ##  Skills & Technologies Utilized
@@ -68,12 +76,14 @@ To run this project, use `npm run dev`. This will start the main server and serv
 | Milestone | Status |
 |--------------|--------|
 | Setup Node.js environment and project structure | ✅ Completed |
-| Implement OPC UA data connection in Admin | ⏳ In Progress |
+| Connect Admin and Customer services via internal API | ✅ Completed |
 | Format and validate JSON output | ⏳ In Progress |
 | Develop Customer service WebSocket server | ✅ Completed |
-| Connect Admin and Customer services | ⏳ In Progress |
+| Connect Admin and Customer services | ✅ Completed |
+| Implement OPC UA data connection in Admin | ☐ Planned |
 | Build SwiftUI client for iOS | ✅ Initial prototype complete |
 | Add error handling and logging | ☐ Planned |
+| Restrict Internal API requests to localhost | ☐ Planned |
 | Implement authentication for OPC UA access | ☐ Planned |
 | Implement authentication for clients | ☐ Planned |
 | Deploy server to Cloud | ☐ Future Improvement |
@@ -81,7 +91,7 @@ To run this project, use `npm run dev`. This will start the main server and serv
 
 ##  Repository
 
-Companion iOS app: [github.com/jpell3/farrel-connect](https://github.com/jpell3/farrel-connect)
+iOS app: [github.com/jpell3/farrel-connect](https://github.com/jpell3/farrel-connect)
 
 
 ##  Notes
