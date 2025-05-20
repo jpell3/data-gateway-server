@@ -1,3 +1,7 @@
+//  Farrel OPCUA Data Gateway Server
+//  Farrel Corporation © 2025
+//  Author: JPelletier
+
 const { generateHash } = require('./util')
 // const { expect } = require('jest')
 

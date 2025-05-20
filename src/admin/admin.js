@@ -8,7 +8,6 @@ import configData from '../../public/config.json' assert { type: 'json' };
 import processData from '../../public/process.json' assert { type: 'json' };
 import { generateTempProcessData } from '../helper/util.js';
 
-
 //  Configuration and Constants
 const adminApp = express();
 adminApp.use(express.json());

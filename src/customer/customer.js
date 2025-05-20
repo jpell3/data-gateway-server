@@ -7,49 +7,10 @@ import express from 'express';
 import configData from '../../public/config.json' assert { type: 'json' };
 import processData from '../../public/process.json' assert { type: 'json' };
 import { packageData, fetchData } from '../helper/util.js';
-import { WebSocketServer } from 'ws';
+import '../helper/websocket.js';
 
 //  Configuration and Constants
 const customerApp = express();
-const io = new WebSocketServer({ port: 80 });
-let intervalId = null;
-
-function startSending(io, socket, interval) {
-  if (intervalId === null) {
-    intervalId = setInterval(() => {
-      io.clients.forEach(client => {
-        if (client.readyState === socket.OPEN) {
-          client.send(JSON.stringify(processData));
-          // client.send(JSON.stringify(configData));
-        }
-    });
-    }, interval);
-  } else {
-    socket.send(`Already sending data. Send "stop" to stop.`);
-  }
-}
-
-io.on('connection', socket => {
-  console.log(`New client connected. ${io.clients.size} clients connected.`);
-  // socket.send(`Server connection successful.`)
-
-  socket.on('message', message => {
-
-    console.log(`Message received from client: ${message}`);
-    
-    if (message.toString() === "start") {
-      startSending(io, socket, 1000);
-    } else if (message.toString() === "stop") {
-      stopSending(socket);
-    }
-
-  });
-
-  socket.on('close', () => {
-    console.log(`Client Disconnected. ${io.clients.size} clients remain connected.`); 
-    stopSending(socket)
-  });
-});
 
 //  Route Handlers
 //  SERVE: landing page

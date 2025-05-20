@@ -4,6 +4,7 @@
 
 //  Imports
 import express from 'express'
+import helmet from 'helmet'
 import ip from 'ip'
 import adminApp from './admin/admin.js'
 import customerApp from './customer/customer.js'
@@ -14,6 +15,7 @@ const port = 3000;
 
 //  Middleware
 app.use(logger);
+app.use(helmet());
 app.use(`/admin`, adminApp);
 app.use(`/customer`, customerApp);
 

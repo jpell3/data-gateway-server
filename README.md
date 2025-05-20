@@ -1,11 +1,14 @@
-#  iOS Data Server
+#  OPCUA Data Server
+
+> [!IMPORTANT]
+> This is an ongoing project. Details within will change with progression.
 
 ##  Project Summary
 
 The purpose of this project is to bridge the gap between industrial control systems and modern-day technology and frameworks. Designed as a modular Node.js server, it provides a clean and scalable architechture to retrieve real-time process data from PLCs using OPC UA and deliver that data to remote clients via WebSockets.
 
 The system is split into two distinct services:
-- **'Admin' Service** – Handles secure OPC UA data retrieval and formatting.
+- **'Admin' Service** – Handles secure OPC UA data retrieval and formatting. It eventually will include client management and access.
 - **'Customer' Service** – Delivers the formatted data to mobile clients via WebSockets.
 
 The goal is to provide a modular, scalable solution for remote visibility into live machine data — with a focus on reliability, clean architecture, and industrial applicability.
@@ -36,13 +39,13 @@ The goal is to provide a modular, scalable solution for remote visibility into l
 
 ##  Sub-Applications
 
-### 🔹 Admin Service
+### --> Admin Service
 - Connects to the PLC via OPC UA using `node-opcua`.
 - Fetches selected process values at regular intervals.
 - Outputs data in a clean, structured JSON format.
 - Passes data to the Customer service (planned: via HTTP, IPC, or shared memory).
 
-### 🔹 Customer Service
+### --> Customer Service
 - Exposes a WebSocket endpoint for remote clients.
 - Receives updated process data from the Admin service.
 - Delivers real-time updates to connected users.
@@ -52,20 +55,20 @@ The goal is to provide a modular, scalable solution for remote visibility into l
 
 To run this project, use `npm run dev`. This will start the main server and services automatically.
 
-- `http://127.0.0.1:3000` - Main Application Landing Page
-- `http://127.0.0.1:3000/admin` - Admin Application Landing Page
-- `http://127.0.0.1:3000/admin/config` - Fetches configuration data.
-- `http://127.0.0.1:3000/admin/data` - Fetches current process data.
-- `http://127.0.0.1:3000/customer` - Customer Application Landing Page
-- `http://127.0.0.1:3000/customer/api` - Fetches current process data from Admin service.
-- `http://127.0.0.1:3000/customer/api/hash` - Fetches SHA1 hash of the current process data.
+- `/` - Main Application Landing Page
+- `/admin` - Admin Application Landing Page
+- `/admin/config` - Fetches configuration data.
+- `/admin/data` - Fetches current process data.
+- `/customer` - Customer Application Landing Page
+- `/customer/api` - Fetches current process data from Admin service.
+- `/customer/api/hash` - Fetches SHA1 hash of the current process data.
 
 
 ##  Skills & Technologies Utilized
 
 - **Node.js** – Event-driven server architecture.
-- **OPC UA (via `node-opcua`)** – Industrial data communication.
-- **WebSocket** – Real-time, bi-directional data streaming.
+- **OPC UA (implementing `node-opcua`)** – Industrial data communication.
+- **WebSocket (implementing `ws`)** – Real-time, bi-directional data streaming.
 - **Modular architecture** – Service separation and clean interfaces.
 - **SwiftUI (in companion iOS project)** – UI for displaying process data.
 - **Git / GitHub** – Version control and collaboration.

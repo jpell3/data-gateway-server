@@ -1,5 +1,5 @@
 {
-  "name": "ios-data-server",
+  "name": "data-gateway-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -12,7 +12,6 @@
   "author": "jpelletier",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
