@@ -1,20 +1,20 @@
-#  OPCUA Data Server
+# OPCUA Data Server
 
 > [!IMPORTANT]
 > This is an ongoing project. Details within will change with progression.
 
-##  Project Summary
+## Project Summary
 
 The purpose of this project is to bridge the gap between industrial control systems and modern-day technology and frameworks. Designed as a modular Node.js server, it provides a clean and scalable architechture to retrieve real-time process data from PLCs using OPC UA and deliver that data to remote clients via WebSockets.
 
 The system is split into two distinct services:
+
 - **'Admin' Service** – Handles secure OPC UA data retrieval and formatting. It eventually will include client management and access.
 - **'Customer' Service** – Delivers the formatted data to mobile clients via WebSockets.
 
 The goal is to provide a modular, scalable solution for remote visibility into live machine data — with a focus on reliability, clean architecture, and industrial applicability.
 
-
-##  Architecture Overview
+## Architecture Overview
 
            +-----------------+         OPC UA        +------------------+
            |                 | <-------------------- |    PLC Server    |
@@ -35,23 +35,23 @@ The goal is to provide a modular, scalable solution for remote visibility into l
                                          |       iOS Client         |
                                          |    (Real-time Viewer)    |
                                          +--------------------------+
-                                         
 
-##  Sub-Applications
+## Sub-Applications
 
 ### --> Admin Service
+
 - Connects to the PLC via OPC UA using `node-opcua`.
 - Fetches selected process values at regular intervals.
 - Outputs data in a clean, structured JSON format.
 - Passes data to the Customer service (planned: via HTTP, IPC, or shared memory).
 
 ### --> Customer Service
+
 - Exposes a WebSocket endpoint for remote clients.
 - Receives updated process data from the Admin service.
 - Delivers real-time updates to connected users.
 
-
-##  Commands and Routes
+## Commands and Routes
 
 To run this project, use `npm run dev`. This will start the main server and services automatically.
 
@@ -63,8 +63,7 @@ To run this project, use `npm run dev`. This will start the main server and serv
 - `/customer/api` - Fetches current process data from Admin service.
 - `/customer/api/hash` - Fetches SHA1 hash of the current process data.
 
-
-##  Skills & Technologies Utilized
+## Skills & Technologies Utilized
 
 - **Node.js** – Event-driven server architecture.
 - **OPC UA (implementing `node-opcua`)** – Industrial data communication.
@@ -73,30 +72,27 @@ To run this project, use `npm run dev`. This will start the main server and serv
 - **SwiftUI (in companion iOS project)** – UI for displaying process data.
 - **Git / GitHub** – Version control and collaboration.
 
+## Project Milestones
 
-##  Project Milestones
+| Milestone                                            | Status                        |
+| ---------------------------------------------------- | ----------------------------- |
+| Setup Node.js environment and project structure      | ✅ Completed                  |
+| Connect Admin and Customer services via internal API | ✅ Completed                  |
+| Develop Customer service WebSocket server            | ✅ Completed                  |
+| Connect Admin and Customer services                  | ✅ Completed                  |
+| Implement OPC UA data connection in Admin            | ✅ Completed                  |
+| Format OPC UA data and export processData to Admin   | ⏳ In Progress                |
+| Build SwiftUI client for iOS                         | ✅ Initial prototype complete |
+| Add error handling and logging                       | ☐ Planned                     |
+| Restrict Internal API requests to localhost          | ☐ Planned                     |
+| Implement authentication for OPC UA access           | ☐ Planned                     |
+| Implement authentication for clients                 | ☐ Planned                     |
+| Deploy server to Cloud                               | ☐ Future Improvement          |
 
-| Milestone | Status |
-|--------------|--------|
-| Setup Node.js environment and project structure | ✅ Completed |
-| Connect Admin and Customer services via internal API | ✅ Completed |
-| Format and validate JSON output | ⏳ In Progress |
-| Develop Customer service WebSocket server | ✅ Completed |
-| Connect Admin and Customer services | ✅ Completed |
-| Implement OPC UA data connection in Admin | ☐ Planned |
-| Build SwiftUI client for iOS | ✅ Initial prototype complete |
-| Add error handling and logging | ☐ Planned |
-| Restrict Internal API requests to localhost | ☐ Planned |
-| Implement authentication for OPC UA access | ☐ Planned |
-| Implement authentication for clients | ☐ Planned |
-| Deploy server to Cloud | ☐ Future Improvement |
-
-
-##  Repository
+## Repository
 
 iOS app: [github.com/jpell3/farrel-connect](https://github.com/jpell3/farrel-connect)
 
-
-##  Notes
+## Notes
 
 This project reflects my interest in combining industrial control knowledge with modern software engineering principles — focusing on performance, modularity, and ease of integration across platforms.

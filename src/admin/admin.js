@@ -7,6 +7,7 @@ import express from 'express';
 import configData from '../../public/config.json' assert { type: 'json' };
 import processData from '../../public/process.json' assert { type: 'json' };
 import { generateTempProcessData } from '../helper/util.js';
+import '../helper/opcua-client.js';
 
 //  Configuration and Constants
 const adminApp = express();

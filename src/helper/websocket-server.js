@@ -6,7 +6,7 @@
 import { WebSocketServer } from 'ws';
 import configData from '../../public/config.json' assert { type: 'json' };
 import processData from '../../public/process.json' assert { type: 'json' };
-import { generateTempProcessData } from '../helper/util.js';
+import { generateTempProcessData } from './util.js';
 
 //  Configuration
 const io = new WebSocketServer({ port: 80 });

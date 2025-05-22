@@ -7,7 +7,7 @@ import express from 'express';
 import configData from '../../public/config.json' assert { type: 'json' };
 import processData from '../../public/process.json' assert { type: 'json' };
 import { packageData, fetchData } from '../helper/util.js';
-import '../helper/websocket.js';
+import '../helper/websocket-server.js';
 
 //  Configuration and Constants
 const customerApp = express();
