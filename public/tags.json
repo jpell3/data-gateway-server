@@ -1,7 +1,52 @@
 [
   {
-    "name": "",
-    "description": "",
+    "name": "MIX_MTR.DRIVE.RPM.SCREW_SP",
+    "description": "Mixer Motor. Speed Setpoint (rpm)",
+    "value": null
+  },
+  {
+    "name": "MIX_MTR.DRIVE.RPM.SCREW_PV",
+    "description": "Mixer Motor. Speed Setpoint (rpm)",
+    "value": null
+  },
+  {
+    "name": "MIX_MTR.DRIVE.TRQ.VALUE",
+    "description": "Mixer Motor. Torque (%)",
+    "value": null
+  },
+  {
+    "name": "MIX_MTR.DRIVE.PWR.PV",
+    "description": "Mixer Motor. Power (kW)",
+    "value": null
+  },
+  {
+    "name": "MIX_MTR.DRIVE.STA.RUN",
+    "description": "Mixer Motor. Run Feedback",
+    "value": null
+  },
+  {
+    "name": "EXT_MTR.DRIVE.RPM.SCREW_SP",
+    "description": "Extruder Motor. Speed Setpoint (rpm)",
+    "value": null
+  },
+  {
+    "name": "EXT_MTR.DRIVE.RPM.SCREW_PV",
+    "description": "Extruder Motor. Speed Setpoint (rpm)",
+    "value": null
+  },
+  {
+    "name": "EXT_MTR.DRIVE.TRQ.VALUE",
+    "description": "Extruder Motor. Torque (%)",
+    "value": null
+  },
+  {
+    "name": "EXT_MTR.DRIVE.PWR.PV",
+    "description": "Extruder Motor. Power (kW)",
+    "value": null
+  },
+  {
+    "name": "EXT_MTR.DRIVE.STA.RUN",
+    "description": "Extruder Motor. Run Feedback",
     "value": null
   }
 ]

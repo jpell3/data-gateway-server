@@ -10,20 +10,16 @@
       },
       "components": {
         "mixer": {
-          "enabled": true,
-          "value1": 100.0
+          "enabled": true
         },
         "extruder": {
-          "enabled": true,
-          "value1": 100.0
+          "enabled": false
         },
         "screenChanger": {
-          "enabled": false,
-          "value1": 100.0
+          "enabled": false
         },
         "pelletSystem": {
-          "enabled": false,
-          "value1": 100.0
+          "enabled": false
         }
       }
     }

@@ -5,8 +5,8 @@
 //  Imports
 import { WebSocketServer } from 'ws';
 import configData from '../../public/config.json' assert { type: 'json' };
-import processData from '../../public/process.json' assert { type: 'json' };
-import { generateTempProcessData } from './util.js';
+import processData from '../admin/opcua-client.js'
+import { generateTempProcessData } from '../helper/util.js';
 
 //  Configuration
 const io = new WebSocketServer({ port: 80 });
@@ -34,7 +34,6 @@ function broadcast() {
 
 function broadcastProcessData() {  
   io.clients.forEach( client => {
-    generateTempProcessData(processData)
     client.send(JSON.stringify(processData))
   })
 }

@@ -6,11 +6,16 @@
 import {  OPCUAClient, AttributeIds  } from 'node-opcua'
 import processData from '../../public/process.json' assert { type: 'json' };
 import os from 'os'
+import fs from 'fs'
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path'
 
 //  Configuration and Constants
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const client = OPCUAClient.create({  clientName:`DataGatewayServer-${os.hostname()}`, keepSessionAlive: true  })
-// const serverIPAddress = `10.0.0.10`
-const serverIPAddress = `192.168.4.250`
+const serverIPAddress = `10.0.0.10`
+// const serverIPAddress = `192.168.4.250`
 const serverPortAddress = 4840
 let message, accessableTags, currentSession
 
@@ -50,28 +55,15 @@ async function handleClient(currentStep) {
 //  STEP 1: Read PLC tags from file
 async function readTagFile() {
   return new Promise((resolve, reject) => {
-    console.log('DEBUG: step1');
-    accessableTags = [{
-      "name": '"MIX_MTR"."DRIVE"."RPM"."SCREW_SP"',
-      "description": "Mixer Motor. Speed Setpoint (rpm)"
-    },
-    {
-      "name": '"MIX_MTR"."DRIVE"."RPM"."SCREW_PV"',
-      "description": "Mixer Motor. Speed Setpoint (rpm)"
-    },
-    {
-      "name": '"MIX_MTR"."DRIVE"."TRQ"."VALUE"',
-      "description": "Mixer Motor. Torque (%)"
-    },
-    {
-      "name": '"MIX_MTR"."DRIVE"."PWR"."PV"',
-      "description": "Mixer Motor. Power (kW)"
-    },
-    {
-      "name": '"MIX_MTR"."DRIVE"."STA"."RUN"',
-      "description": "Extruder Motor. Run Feedback"
-    }]
-    resolve("Step2")
+    fs.readFile(path.join(__dirname, '../../public/tags.json'), 'utf-8', (error, data) => {
+      if(!error) {
+        accessableTags = formatTags(JSON.parse(data))
+        resolve("Step2")
+      } else {
+        console.log(error);
+        reject()
+      }
+    })
   })
 }
 
@@ -96,7 +88,7 @@ async function openSession(client) {
       currentSession = session
       const sessionID = currentSession.sessionId.value
       const sessionName = currentSession.serverEndpoints[0].server.applicationName.text
-      console.log(`Session opened successfully with server ${sessionName} with ID ${sessionID}`);
+      console.log(`Session opened successfully with server name ${sessionName} with client ID ${sessionID}`);
       resolve("Step4")
     })
   })
@@ -107,6 +99,7 @@ async function readData(session, accessableTags) {
   console.log('DEBUG: step4');
   return new Promise((resolve, reject) => {
     setInterval(pollData, 1000)
+    // currently staying in this state indefinitely
     // resolve("Exit")
   })
 }
@@ -135,13 +128,14 @@ async function disconnectClient(client, session) {
 
 //  Event Handler
 client.on("backoff", (retry, delay) => {
-  console.log(`Backoff #${retry}. Trying again in ${delay/1000} seconds.`);
+  console.log(`Backoff #${retry}. Trying again in ${Math.floor(delay/1000)} seconds.`);
 });
+
 
 //  Convert PLC Tag to OPC UA tag format
 function formatTags(tagArray) {
   const regex1 = /\'/g
-  const regex2 = /\'/g
+  const regex2 = /\./g
   tagArray.forEach( tag => {
     tag.name = `\"${tag.name.replace(regex1, '').replace(regex2, "\".\"")}\"`
   })
@@ -155,14 +149,51 @@ function pollData() {
     currentSession.read(accessName, (error, returnValue) => {
       if(!error) {
         tag.value = returnValue.value.value
-        console.log(`Tag ${tag.name} found with value ${tag.value}`);
+        mapData(tag)
       } else {
         tag.value = null
         console.log(`Unable to read tag ${tag}.`);
       }
     })
   })
-  console.log(`------------`);
 }
 
-export { processData }
+//  Temporary hardcode data to processData. Need to create a mapping function.
+function mapData(tag) {
+    switch(tag.name) {
+      case `"MIX_MTR"."DRIVE"."RPM"."SCREW_PV"`:
+        processData.data.mixer.drive.speed = tag.value
+        break;
+      case `"MIX_MTR"."DRIVE"."RPM"."SCREW_SP"`:
+        processData.data.mixer.drive.setpoint = tag.value
+        break;
+      case `"MIX_MTR"."DRIVE"."TRQ"."VALUE"`:
+        processData.data.mixer.drive.torque = tag.value
+        break;
+      case `"MIX_MTR"."DRIVE"."PWR"."PV"`:
+        processData.data.mixer.drive.power  = tag.value
+        break;
+      case `"MIX_MTR"."DRIVE"."STA"."RUN"`:
+        processData.data.mixer.drive.running = tag.value
+        break;
+      case `"EXT_MTR"."DRIVE"."RPM"."SCREW_PV"`:
+        processData.data.extruder.drive.speed = tag.value
+        break;
+      case `"EXT_MTR"."DRIVE"."RPM"."SCREW_SP"`:
+        processData.data.extruder.drive.setpoint = tag.value
+        break;
+      case `"EXT_MTR"."DRIVE"."TRQ"."VALUE"`:
+        processData.data.extruder.drive.torque = tag.value
+        break;
+      case `"EXT_MTR"."DRIVE"."PWR"."PV"`:
+        processData.data.extruder.drive.power  = tag.value
+        break;
+      case `"EXT_MTR"."DRIVE"."STA"."RUN"`:
+        processData.data.extruder.drive.running = tag.value
+        break;
+      default:
+        console.log(`Unable to map ${tag.name}`);  
+    }
+}
+
+export default processData
