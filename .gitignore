@@ -143,3 +143,6 @@ dist
 
 # temp development area
 *.temp.js
+
+# macOS files
+.DS_Store

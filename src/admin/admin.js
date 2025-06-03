@@ -5,9 +5,9 @@
 //  Imports
 import express from 'express';
 import configData from '../../public/config.json' assert { type: 'json' };
+import processData from '../../public/process.json' assert { type: 'json' };
 import { generateTempProcessData } from '../helper/util.js';
-import './opcua-client.js';
-import processData from './opcua-client.js'
+// import './opcua-client.js';
 
 //  Configuration and Constants
 const adminApp = express();
@@ -27,6 +27,8 @@ adminApp.get(`/config`, (req, res) => {
 //  SERVE: process data
 adminApp.get(`/data`, (req, res) => {
   res.writeHead(200, { "Content-Type" : 'application/json' });
+  generateTempProcessData(processData)
+  console.log(`admin: ${processData.data.extruder.drive.speed}`);
   res.end(JSON.stringify(processData))});
 
 //  DELEGATE: send unmatched routes back to app.js

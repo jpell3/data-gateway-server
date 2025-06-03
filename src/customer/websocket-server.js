@@ -34,6 +34,7 @@ function broadcast() {
 
 function broadcastProcessData() {  
   io.clients.forEach( client => {
+    generateTempProcessData(processData)
     client.send(JSON.stringify(processData))
   })
 }

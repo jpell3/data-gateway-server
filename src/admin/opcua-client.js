@@ -11,11 +11,12 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path'
 
 //  Configuration and Constants
+console.log(`Initializing OPCUA`);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const client = OPCUAClient.create({  clientName:`DataGatewayServer-${os.hostname()}`, keepSessionAlive: true  })
-const serverIPAddress = `10.0.0.10`
-// const serverIPAddress = `192.168.4.250`
+// const serverIPAddress = `10.0.0.10`
+const serverIPAddress = `192.168.4.250`
 const serverPortAddress = 4840
 let message, accessableTags, currentSession
 
@@ -70,7 +71,6 @@ async function readTagFile() {
 //  STEP 2: Connect to server
 async function connectClient(client) {
   return new Promise((resolve, reject) => {
-    console.log('DEBUG: step2');
     client.connect(`opc.tcp://${serverIPAddress}:${serverPortAddress}`, error => {
     error ? message = 'failed to connect' : message = 'successfully connected'
     console.log(`Client ${message} to opc.tcp://${serverIPAddress}:${serverPortAddress}.`);
@@ -81,7 +81,6 @@ async function connectClient(client) {
 
 //  STEP 3: Open server session
 async function openSession(client) {
-  console.log('DEBUG: step3');
   return new Promise((resolve, reject) => {
     client.createSession((error, session) => {
       if(error) { reject("Step3") }
@@ -96,7 +95,6 @@ async function openSession(client) {
 
 //  STEP 4: Read data continuously
 async function readData(session, accessableTags) {
-  console.log('DEBUG: step4');
   return new Promise((resolve, reject) => {
     setInterval(pollData, 1000)
     // currently staying in this state indefinitely
@@ -106,7 +104,6 @@ async function readData(session, accessableTags) {
 
 //  STEP 5: Close session
 async function disconnectClient(client, session) {
-  console.log('DEBUG: step5');
   return new Promise((resolve, reject) => {
     session.close(error => {
       if(error) {
