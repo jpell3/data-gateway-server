@@ -1,7 +1,8 @@
 # OPCUA Data Server
 
-> [!IMPORTANT]
-> This is an ongoing project. Details within will change with progression.
+> [!CAUTION]
+> This project uses an outdated architecture and is no longer being updated. The updated repository for this project is opcua-client:
+> https://github.com/jpell3/opcua-client
 
 ## Project Summary
 
